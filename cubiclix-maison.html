@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cubiclix — Maison</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --night: #0D0F1A;
+    --cube-blue: #1A2744;
+    --gold: #F4B942;
+    --sun: #FF8C42;
+    --green: #4ECDC4;
+    --white: #F0F4FF;
+    --muted: #8892B0;
+    --card-bg: #131629;
+  }
+
+  body {
+    background: var(--night);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(244,185,66,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(78,205,196,0.08) 0%, transparent 60%);
+  }
+
+  /* Cube 3D animé */
+  .cube-wrap {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 2rem;
+    perspective: 400px;
+  }
+
+  .cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotateCube 12s infinite linear;
+  }
+
+  @keyframes rotateCube {
+    0%   { transform: rotateX(20deg) rotateY(0deg); }
+    100% { transform: rotateX(20deg) rotateY(360deg); }
+  }
+
+  .face {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 2px solid rgba(244,185,66,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: rgba(26, 39, 68, 0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  .face.front  { transform: translateZ(60px); }
+  .face.back   { transform: rotateY(180deg) translateZ(60px); }
+  .face.left   { transform: rotateY(-90deg) translateZ(60px); }
+  .face.right  { transform: rotateY(90deg) translateZ(60px); }
+  .face.top    { transform: rotateX(90deg) translateZ(60px); }
+  .face.bottom { transform: rotateX(-90deg) translateZ(60px); }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    line-height: 1.05;
+    position: relative;
+  }
+
+  .hero h1 span {
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    margin-top: 1.25rem;
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.6;
+    position: relative;
+  }
+
+  .hero-tagline {
+    margin-top: 2rem;
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid rgba(244,185,66,0.35);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 5rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-body {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 560px;
+  }
+
+  /* FACETTES GRID */
+  .facettes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+
+  .facette-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .facette-card:hover {
+    border-color: rgba(244,185,66,0.3);
+    transform: translateY(-4px);
+  }
+
+  .facette-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--sun));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .facette-card:hover::before {
+    opacity: 1;
+  }
+
+  .facette-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .facette-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+  }
+
+  .facette-desc {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .facette-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(244,185,66,0.1);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* PROMESSE */
+  .promesse {
+    background: var(--card-bg);
+    border: 1px solid rgba(244,185,66,0.15);
+    border-radius: 24px;
+    padding: 3.5rem 2.5rem;
+    text-align: center;
+    margin: 3rem auto 0;
+    max-width: 700px;
+  }
+
+  .promesse-trio {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .trio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .trio-icon {
+    font-size: 2rem;
+  }
+
+  .trio-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .trio-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  footer strong {
+    color: var(--gold);
+  }
+
+  /* Divider */
+  .divider {
+    width: 48px;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--sun));
+    margin: 1.5rem 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="cube-wrap">
+    <div class="cube">
+      <div class="face front">🏠</div>
+      <div class="face back">🌞</div>
+      <div class="face left">🌿</div>
+      <div class="face right">⚡</div>
+      <div class="face top">❄️</div>
+      <div class="face bottom">🔋</div>
+    </div>
+  </div>
+
+  <p class="hero-eyebrow">Charlie Magique · Master Cube</p>
+  <h1>Maison<br><span>Cubiclix</span></h1>
+  <p class="hero-sub">Votre maison autonome, économe et intelligente. Des solutions vraies, testées, prouvées.</p>
+  <span class="hero-tagline">Résultats · Preuves · Gens Heureux</span>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    DÉCOUVRIR
+  </div>
+</div>
+
+<!-- CONCEPT -->
+<section>
+  <p class="section-label">Le concept</p>
+  <h2 class="section-title">Un cube,<br>six facettes essentielles</h2>
+  <div class="divider"></div>
+  <p class="section-body">
+    Chaque besoin de votre maison a sa facette. Énergie, confort, alimentation, jardin, économies, autonomie. 
+    Le Cube Maison Cubiclix regroupe les meilleures solutions — pas du blabla, des résultats concrets.
+  </p>
+</section>
+
+<!-- FACETTES -->
+<section>
+  <p class="section-label">Les 6 facettes</p>
+  <h2 class="section-title">Ce que le cube couvre</h2>
+  <div class="divider"></div>
+
+  <div class="facettes">
+
+    <div class="facette-card">
+      <span class="facette-icon">🌞</span>
+      <div class="facette-title">Énergie Solaire</div>
+      <div class="facette-desc">Panneaux, onduleurs, autoconsommation. Produire sa propre énergie et réduire sa facture.</div>
+      <span class="facette-tag">Économies immédiates</span>
+    </div>
+
+    <div class="facette-card">
+      <span class="facette-icon">❄️</span>
+      <div class="facette-title">Climatisation Intelligente</div>
+      <div class="facette-desc">Solutions clim basse consommation, pompes à chaleur, ventilation naturelle optimisée.</div>
+      <span class="facette-tag">Confort été/hiver</span>
+    </div>
+
+    <div class="facette-card">
+      <span class="facette-icon">🔋</span>
+      <div class="facette-title">Stockage & Batterie</div>
+      <div class="facette-desc">Batteries domestiques, stockage de surplus solaire, autonomie même la nuit.</div>
+      <span class="facette-tag">Autonomie 24h</span>
+    </div>
+
+    <div class="facette-card">
+      <span class="facette-icon">🌿</span>
+      <div class="facette-title">Jardin & Potager</div>
+      <div class="facette-desc">Jardinage bio, permaculture, compost, récupération d'eau de pluie. Manger sain chez soi.</div>
+      <span class="facette-tag">0 pesticide</span>
+    </div>
+
+    <div class="facette-card">
+      <span class="facette-icon">🥦</span>
+      <div class="facette-title">Alimentation Bio</div>
+      <div class="facette-desc">Circuits courts, producteurs locaux, conservation naturelle. Santé et budget maîtrisé.</div>
+      <span class="facette-tag">Circuits courts</span>
+    </div>
+
+    <div class="facette-card">
+      <span class="facette-icon">💡</span>
+      <div class="facette-title">Maison Économe</div>
+      <div class="facette-desc">Isolation, LED, domotique simple. Réduire sa consommation sans changer son confort.</div>
+      <span class="facette-tag">-40% sur la facture</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROMESSE -->
+<section>
+  <div class="promesse">
+    <p class="section-label" style="text-align:center">La promesse Charlie Magique</p>
+    <h2 class="section-title" style="font-size:1.8rem">Pas de vendeur.<br>Que des solutions qui marchent.</h2>
+    <p style="color:var(--muted); font-size:0.95rem; margin-top:1rem; line-height:1.7">
+      Chaque solution du Cube Maison est testée, vérifiée, et partagée par la communauté. 
+      Si ça ne marche pas, on ne le recommande pas.
+    </p>
+
+    <div class="promesse-trio">
+      <div class="trio-item">
+        <span class="trio-icon">✅</span>
+        <span class="trio-label">Résultats</span>
+        <span class="trio-sub">Chiffrés et prouvés</span>
+      </div>
+      <div class="trio-item">
+        <span class="trio-icon">📊</span>
+        <span class="trio-label">Preuves</span>
+        <span class="trio-sub">Avant / Après réels</span>
+      </div>
+      <div class="trio-item">
+        <span class="trio-icon">😊</span>
+        <span class="trio-label">Gens Heureux</span>
+        <span class="trio-sub">Communauté qui valide</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Charlie Magique</strong> · Master Cube 1001 Facettes<br>
+  <span style="margin-top:0.4rem; display:block">Maison Cubiclix — Facette #1 🏠🧊</span>
+</footer>
+
+</body>
+          </html>
+          
